@@ -27,7 +27,7 @@ int		ft_isprint(int c);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 
-int		ft_strlen(const char *str);
+int		ft_str_len(const char *str);
 char	*ft_strdup(const char *src);
 
 int		ft_atoi(const char *str);
@@ -42,14 +42,14 @@ int		ft_memcmp(const void *s1, const void *s2, size_t size);
 
 int		ft_strncmp(char *s1, char *s2, size_t n);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
-char	*ft_strchr(const char *str, int c);
+char	*ft_str_chr(const char *str, int c);
 char	*ft_strrchr(const char *s, int c);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
-char	*ft_strjoin(char const *s1, char const *s2);
+//char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
