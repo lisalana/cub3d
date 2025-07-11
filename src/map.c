@@ -1,20 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/11 10:45:42 by reeer-aa          #+#    #+#             */
+/*   Updated: 2025/07/11 16:12:53 by reeer-aa         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-void print_map(t_data *data)
+void	print_map(t_data *data)
 {
-	int i;
+	int	i;
 
 	printf("=== CARTE ===\n");
 	printf("Dimensions: %d x %d\n", data->map_width, data->map_height);
-	printf("Joueur: (%d, %d) direction '%c'\n",
-		data->player.x, data->player.y, data->player.direction);
-	
+	printf("Joueur: (%d, %d) direction '%c'\n", data->player.x, data->player.y,
+		data->player.direction);
 	if (!data->map)
 	{
 		printf("ERREUR: data->map est NULL!\n");
-		return;
+		return ;
 	}
-	
 	i = 0;
 	while (i < data->map_height)
 	{
@@ -24,13 +34,12 @@ void print_map(t_data *data)
 	printf("============\n");
 }
 
-void cleanup_map(t_data *data)
+void	cleanup_map(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (!data->map)
-		return;
-
+		return ;
 	i = 0;
 	while (i < data->map_height)
 	{
@@ -44,29 +53,123 @@ void cleanup_map(t_data *data)
 	data->map_width = 0;
 }
 
+static int count_players(t_data *data, int *player_x, int *player_y, char *player_direction)
+{
+    int count;
+    int x;
+    int y;
+
+    y = 0;
+    count = 0;
+    while (y < data->map_height)
+    {
+        x = 0;
+        while (data->map[y][x])
+        {
+            if (data->map[y][x] == 'N' || data->map[y][x] == 'S'
+            || data->map[y][x] == 'E' || data->map[y][x] == 'W')
+            {
+                count++;
+                if (count == 1)
+                {
+                    *player_x = x;
+                    *player_y = y;
+                    *player_direction = data->map[y][x];
+                }
+            }
+            x++;
+        }
+        y++;
+    }
+    return (count);
+}
+
 int find_player(t_data *data)
 {
-	int y;
-	int x;
+    int count;
+    int player_x;
+    int player_y;
+    char player_direction;
 
-	y = 0;
-	while (y < data->map_height)
-	{
-		x = 0;
-		while (data->map[y][x])
-		{
-			if (data->map[y][x] == 'N' || data->map[y][x] == 'S' ||
-				data->map[y][x] == 'E' || data->map[y][x] == 'W')
-			{
-				data->player.x = x;
-				data->player.y = y;
-				data->player.direction = data->map[y][x];
-				data->map[y][x] = '0'; // Remplacer par un espace vide
-				return (1);
-			}
-			x++;
-		}
-		y++;
-	}
-	return (0); // Aucun joueur trouvé
+    count = count_players(data, &player_x, &player_y, &player_direction);
+    
+    if (count == 1)
+    {
+        data->player.x = player_x;
+        data->player.y = player_y;
+        data->player.direction = player_direction;
+        data->map[player_y][player_x] = '0';
+        return (1);
+    }
+    
+    return (0);
 }
+
+// int is_valid_wall(t_data *data)
+// {
+//     int i;
+//     int j;
+    
+//     // Vérifier première et dernière ligne
+//     i = 0;
+//     while (data->map[0][i])
+//     {
+//         if (data->map[0][i] != '1' && data->map[0][i] != ' ')
+//             return (0);
+//         i++;
+//     }
+    
+//     i = data->map_height - 1;
+//     j = 0;
+//     while (data->map[i][j])
+//     {
+//         if (data->map[i][j] != '1' && data->map[i][j] != ' ')
+//             return (0);
+//         j++;
+//     }
+    
+//     // Vérifier première et dernière colonne de chaque ligne
+//     i = 1;
+//     while (i < data->map_height - 1)
+//     {
+//         if (data->map[i][0] != '1' && data->map[i][0] != ' ')
+//             return (0);
+//         j = ft_strlen(data->map[i]) - 1;
+//         if (data->map[i][j] != '1' && data->map[i][j] != ' ')
+//             return (0);
+//         i++;
+//     }
+//     return (1);
+// }
+
+int check_content(t_data *data)
+{
+    int i;
+    int j;
+    
+    i = 0;
+    while (data->map[i])
+    {
+        j = 0;
+        while (data->map[i][j])
+        {
+            if (data->map[i][j] != '1' && data->map[i][j] != '0' 
+                && data->map[i][j] != 'N' && data->map[i][j] != 'S'
+                && data->map[i][j] != 'E' && data->map[i][j] != 'W'
+                && data->map[i][j] != ' ')
+            {
+                return (0);
+            }
+            j++;
+        }
+        i++;
+    }
+    return (1);
+}
+
+// int	is_valid_map(t_data *data)
+// {
+// 	if (find_player(data) && is_valid_wall(data) && is_valid_content(data))
+// 		return (1);
+// 	return (0);
+// }
