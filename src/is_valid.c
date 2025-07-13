@@ -1,3 +1,4 @@
+
 #include "cub3d.h"
 
 // VALIDATION DES BORDURES
@@ -142,7 +143,7 @@ int check_files(t_config *config)
 
 int check_map(t_data *data)
 {
-	// 1. Vérifier contenu de la carte AVANT de modifier quoi que ce soit
+	// 1. Vérifier contenu de la carte AVANT
 	if (!check_content(data))
 	{
 		printf("Error\nInvalid characters in map\n");
