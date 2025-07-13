@@ -1,12 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is_valid.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsadi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/13 16:42:11 by lsadi             #+#    #+#             */
+/*   Updated: 2025/07/13 16:42:12 by lsadi            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
-// VALIDATION DES BORDURES
-
-int check_line(t_data *data, int line_index)
+int	check_line(t_data *data, int line_index)
 {
-	int j;
-	char *line;
+	int		j;
+	char	*line;
 
 	line = data->map[line_index];
 	j = 0;
@@ -19,19 +28,16 @@ int check_line(t_data *data, int line_index)
 	return (1);
 }
 
-int check_sides(t_data *data, int i)
+int	check_sides(t_data *data, int i)
 {
-	int j;
-	int len;
+	int	j;
+	int	len;
 
-	// Vérifier premier caractère non-espace
 	j = 0;
 	while (data->map[i][j] == ' ')
 		j++;
 	if (data->map[i][j] && data->map[i][j] != '1')
 		return (0);
-
-	// Vérifier dernier caractère non-espace  
 	len = ft_str_len(data->map[i]);
 	j = len - 1;
 	while (j >= 0 && data->map[i][j] == ' ')
@@ -41,17 +47,14 @@ int check_sides(t_data *data, int i)
 	return (1);
 }
 
-int check_walls(t_data *data)
+int	check_walls(t_data *data)
 {
-	int i;
+	int	i;
 
-	// Vérifier première ligne
 	if (!check_line(data, 0))
 		return (0);
-	// Vérifier dernière ligne
 	if (!check_line(data, data->map_height - 1))
 		return (0);
-	// Vérifier côtés pour lignes intermédiaires
 	i = 1;
 	while (i < data->map_height - 1)
 	{
@@ -62,9 +65,7 @@ int check_walls(t_data *data)
 	return (1);
 }
 
-// VALIDATION DES ESPACES
-
-int check_pos(t_data *data, int x, int y)
+int	check_pos(t_data *data, int x, int y)
 {
 	if (y < 0 || y >= data->map_height)
 		return (1);
@@ -75,7 +76,7 @@ int check_pos(t_data *data, int x, int y)
 	return (1);
 }
 
-int check_around(t_data *data, int x, int y)
+int	check_around(t_data *data, int x, int y)
 {
 	if (!check_pos(data, x - 1, y))
 		return (0);
@@ -88,10 +89,10 @@ int check_around(t_data *data, int x, int y)
 	return (1);
 }
 
-int check_spaces(t_data *data)
+int	check_spaces(t_data *data)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < data->map_height)
@@ -111,11 +112,9 @@ int check_spaces(t_data *data)
 	return (1);
 }
 
-// VALIDATION DES FICHIERS DE TEXTURE 
-
-int file_exists(char *filename)
+int	file_exists(char *filename)
 {
-	int fd;
+	int	fd;
 
 	if (!filename)
 		return (0);
@@ -126,7 +125,7 @@ int file_exists(char *filename)
 	return (1);
 }
 
-int check_files(t_config *config)
+int	check_files(t_config *config)
 {
 	if (!file_exists(config->texture_north))
 		return (0);
@@ -139,41 +138,33 @@ int check_files(t_config *config)
 	return (1);
 }
 
-// VALIDATION PRINCIPALE
-
-int check_map(t_data *data)
+int	check_map(t_data *data)
 {
-	// 1. Vérifier contenu de la carte AVANT
 	if (!check_content(data))
 	{
 		printf("Error\nInvalid characters in map\n");
 		return (0);
 	}
-	// 2. Vérifier qu'on a un joueur
 	if (!find_player(data))
 	{
 		printf("Error\nNo player or multiple players found\n");
 		return (0);
 	}
-	// 3. Vérifier que la carte est fermée
 	if (!check_walls(data))
 	{
 		printf("Error\nMap is not closed by walls\n");
 		return (0);
 	}
-	// 4. Vérifier espaces
 	if (!check_spaces(data))
 	{
 		printf("Error\nInvalid space configuration\n");
 		return (0);
 	}
-	// 5. Vérifier acces
 	if (!check_path(data))
 	{
 		printf("Error\nPlayer area is not properly enclosed\n");
 		return (0);
 	}
-	// 6. Vérifier fichiers de texture
 	if (!check_files(&data->config))
 	{
 		printf("Error\nTexture files not found\n");

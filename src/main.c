@@ -51,56 +51,28 @@ void	print_config(t_config *config)
 	printf("=====================\n");
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data data;
-	
+	t_data	data;
+
 	if (ac != 2 || !check_file_extension(av[1]))
 		return (printf("usage: %s <map.cub>\n", av[0]), 1);
-	
 	init_data(&data);
-	
 	if (parse_file(av[1], &data))
 	{
 		printf("Erreur pendant le parsing\n");
 		cleanup_data(&data);
 		return (1);
 	}
-	
 	printf("Parsing terminé\n");
-	
-	// VALIDATION COMPLÈTE
 	if (!check_map(&data))
 	{
 		cleanup_data(&data);
 		return (1);
 	}
-	
 	printf("Carte valide !\n");
 	print_config(&data.config);
 	print_map(&data);
-	
 	cleanup_data(&data);
 	return (0);
 }
-
-// int	main(int ac, char **av)
-// {
-// 	t_data data;
-
-// 	if (ac != 2 || !check_file_extension(av[1]))
-// 		return (printf("usage: %s <map.cub>\n", av[0]), 1);
-// 	init_data(&data);
-// 	if (parse_file(av[1], &data) || !is_valid_map(&data))
-// 	{
-// 		// perror("Error\n");
-// 		printf("Erreur pendant le parsing\n");
-// 		cleanup_data(&data); // Cleanup en cas d'erreur
-// 		return (1);
-// 	}
-// 	printf("Parsing termine\n");
-// 	print_config(&data.config);
-// 	print_map(&data);    // Affichez la carte
-// 	cleanup_data(&data); // Cleanup à la fin
-// 	return (0);
-// }

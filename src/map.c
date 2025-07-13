@@ -53,63 +53,62 @@ void	cleanup_map(t_data *data)
 	data->map_width = 0;
 }
 
-static int count_players(t_data *data, int *player_x, int *player_y, char *player_direction)
+static int	count_players(t_data *data, int *player_x, int *player_y,
+		char *player_direction)
 {
-    int count;
-    int x;
-    int y;
+	int	count;
+	int	x;
+	int	y;
 
-    y = 0;
-    count = 0;
-    while (y < data->map_height)
-    {
-        x = 0;
-        while (data->map[y][x])
-        {
-            if (data->map[y][x] == 'N' || data->map[y][x] == 'S'
-            || data->map[y][x] == 'E' || data->map[y][x] == 'W')
-            {
-                count++;
-                if (count == 1)
-                {
-                    *player_x = x;
-                    *player_y = y;
-                    *player_direction = data->map[y][x];
-                }
-            }
-            x++;
-        }
-        y++;
-    }
-    return (count);
+	y = 0;
+	count = 0;
+	while (y < data->map_height)
+	{
+		x = 0;
+		while (data->map[y][x])
+		{
+			if (data->map[y][x] == 'N' || data->map[y][x] == 'S'
+				|| data->map[y][x] == 'E' || data->map[y][x] == 'W')
+			{
+				count++;
+				if (count == 1)
+				{
+					*player_x = x;
+					*player_y = y;
+					*player_direction = data->map[y][x];
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+	return (count);
 }
 
-int find_player(t_data *data)
+int	find_player(t_data *data)
 {
-    int count;
-    int player_x;
-    int player_y;
-    char player_direction;
+	int		count;
+	int		player_x;
+	int		player_y;
+	char	player_direction;
 
-    count = count_players(data, &player_x, &player_y, &player_direction);
-    
-    if (count == 1)
-    {
-        data->player.x = player_x;
-        data->player.y = player_y;
-        data->player.direction = player_direction;
-        data->map[player_y][player_x] = '0';
-        return (1);
-    }
-    
-    return (0);
+	count = count_players(data, &player_x, &player_y, &player_direction);
+	if (count == 1)
+	{
+		data->player.x = player_x;
+		data->player.y = player_y;
+		data->player.direction = player_direction;
+		data->map[player_y][player_x] = '0';
+		return (1);
+	}
+	return (0);
 }
 
 // int is_valid_wall(t_data *data)
 // {
 //     int i;
 //     int j;
-    
+
 //     // Vérifier première et dernière ligne
 //     i = 0;
 //     while (data->map[0][i])
@@ -118,7 +117,7 @@ int find_player(t_data *data)
 //             return (0);
 //         i++;
 //     }
-    
+
 //     i = data->map_height - 1;
 //     j = 0;
 //     while (data->map[i][j])
@@ -127,7 +126,7 @@ int find_player(t_data *data)
 //             return (0);
 //         j++;
 //     }
-    
+
 //     // Vérifier première et dernière colonne de chaque ligne
 //     i = 1;
 //     while (i < data->map_height - 1)
@@ -142,29 +141,29 @@ int find_player(t_data *data)
 //     return (1);
 // }
 
-int check_content(t_data *data)
+int	check_content(t_data *data)
 {
-    int i;
-    int j;
-    
-    i = 0;
-    while (data->map[i])
-    {
-        j = 0;
-        while (data->map[i][j])
-        {
-            if (data->map[i][j] != '1' && data->map[i][j] != '0' 
-                && data->map[i][j] != 'N' && data->map[i][j] != 'S'
-                && data->map[i][j] != 'E' && data->map[i][j] != 'W'
-                && data->map[i][j] != ' ')
-            {
-                return (0);
-            }
-            j++;
-        }
-        i++;
-    }
-    return (1);
+	int	i;
+	int	j;
+
+	i = 0;
+	while (data->map[i])
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+			if (data->map[i][j] != '1' && data->map[i][j] != '0'
+				&& data->map[i][j] != 'N' && data->map[i][j] != 'S'
+				&& data->map[i][j] != 'E' && data->map[i][j] != 'W'
+				&& data->map[i][j] != ' ')
+			{
+				return (0);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }
 
 // int	is_valid_map(t_data *data)
