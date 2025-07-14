@@ -12,18 +12,7 @@
 
 #include "cub3d.h"
 
-// int	is_border(t_data *data, int x, int y)
-// {
-// 	if (y == 0 || y == data->map_height - 1)
-// 		return (1);
-// 	if (x == 0)
-// 		return (1);
-// 	if (x >= (int)ft_str_len(data->map[y]) - 1)
-// 		return (1);
-// 	return (0);
-// }
-
-static int get_max_width(t_data *data)
+int get_max_width(t_data *data)
 {
 	int max_width;
 	int current_width;
@@ -56,25 +45,34 @@ int is_border(t_data *data, int x, int y)
 void flood_fill(char **map, int x, int y, t_data *data, int *valid)
 {
     char current_char;
-
+    
     // Conditions d'arrêt
     if (*valid == 0)
+	{
         return;
+    }
     if (y < 0 || y >= data->map_height)
+    {
         return;
+    }
     if (x < 0 || x >= (int)ft_str_len(map[y]))
+    {
         return;
+    }
     
-    // Utiliser la carte copiée, pas get_char_at !
     current_char = map[y][x];
-    
+  
     // Si on trouve un mur/visité
     if (current_char == '1' || current_char == 'V')
+    {
         return;
+    }
     
     // Si on trouve un espace, c'est OK (zone inaccessible)
     if (current_char == ' ')
+    {
         return;
+    }
     
     // Vérifier si on est sur une vraie bordure
     if (is_border(data, x, y))
@@ -82,40 +80,38 @@ void flood_fill(char **map, int x, int y, t_data *data, int *valid)
         *valid = 0;
         return;
     }
-    
-    // Marquer comme visité
     map[y][x] = 'V';
-
-    // Récursion dans les 4 directions
-    flood_fill(map, x - 1, y, data, valid);
-    flood_fill(map, x + 1, y, data, valid);
-    flood_fill(map, x, y - 1, data, valid);
-    flood_fill(map, x, y + 1, data, valid);
+    flood_fill(map, x - 1, y, data, valid);  // Gauche
+    flood_fill(map, x + 1, y, data, valid);  // Droite
+    flood_fill(map, x, y - 1, data, valid);  // Haut
+    flood_fill(map, x, y + 1, data, valid);  // Bas
 }
 
-// void	flood_fill(char **map, int x, int y, t_data *data, int *valid)
+// void flood_fill(char **map, int x, int y, t_data *data, int *valid)
 // {
-// 	if (*valid == 0)
-// 		return ;
-// 	if (y < 0 || y >= data->map_height)
-// 		return ;
-// 	if (x < 0 || x >= (int)ft_str_len(map[y]))
-// 		return ;
-// 	if (is_border(data, x, y))
-// 	{
-// 		*valid = 0;
-// 		return ;
-// 	}
-// 	if (map[y][x] == '1' || map[y][x] == 'V')
-// 	{
-// 		printf("Wall or visited at (%d, %d)\n", x, y);
-// 		return ;
-// 	}
-// 	map[y][x] = 'V';
-// 	flood_fill(map, x - 1, y, data, valid);
-// 	flood_fill(map, x + 1, y, data, valid);
-// 	flood_fill(map, x, y - 1, data, valid);
-// 	flood_fill(map, x, y + 1, data, valid);
+//     char current_char;
+
+//     if (*valid == 0)
+//         return;
+//     if (y < 0 || y >= data->map_height)
+//         return;
+//     if (x < 0 || x >= (int)ft_str_len(map[y]))
+//         return;
+//     current_char = map[y][x];
+//     if (current_char == '1' || current_char == 'V')
+//         return;
+//     if (current_char == ' ')
+//         return;
+//     if (is_border(data, x, y))
+//     {
+//         *valid = 0;
+//         return;
+//     }
+//     map[y][x] = 'V';
+//     flood_fill(map, x - 1, y, data, valid);
+//     flood_fill(map, x + 1, y, data, valid);
+//     flood_fill(map, x, y - 1, data, valid);
+//     flood_fill(map, x, y + 1, data, valid);
 // }
 
 char	**copy_map(t_data *data)

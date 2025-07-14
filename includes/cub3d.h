@@ -54,7 +54,8 @@ typedef struct s_data
 // ========== FONCTIONS DE PARSING ==========
 int		parse_file(const char *filename, t_data *data);
 void	parse_color_line(char *line, t_config *config);
-void	parse_texture_line(char *line, t_config *config);
+int 	parse_color_line_safe(char *line, t_config *config);
+int		parse_texture_line(char *line, t_config *config);
 int		is_color_line(char *line);
 int		is_texture_line(char *line);
 int		is_map_line(char *line);
@@ -85,12 +86,6 @@ int		check_line(t_data *data, int line_index);
 int		check_sides(t_data *data, int i);
 int		check_walls(t_data *data);
 
-// ==========
-
-// int				is_valid_wall(t_data *data);
-// int				is_valid_content(t_data *data);
-// int				is_valid_map(t_data *data);
-
 // Validation des espaces
 int		check_pos(t_data *data, int x, int y);
 int		check_around(t_data *data, int x, int y);
@@ -101,32 +96,10 @@ int		is_border(t_data *data, int x, int y);
 void	flood_fill(char **map, int x, int y, t_data *data, int *valid);
 char	**copy_map(t_data *data);
 void	free_copy(char **map, int height);
-int		check_path(t_data *data);
+int 	get_max_width(t_data *data);
 
 // Validation des fichiers
 int		file_exists(char *filename);
 int		check_files(t_config *config);
-
-// Validation principale
-int		check_map(t_data *data);
-
-// int				parse_file(const char *filename, t_data *data);
-// void			parse_color_line(char *line, t_config *config);
-// void			parse_texture_line(char *line, t_config *config);
-// int				is_color_line(char *line);
-// int				is_texture_line(char *line);
-// int				is_map_line(char *line);
-// void			cleanup_config(t_config *config);
-// void			cleanup_data(t_data *data);
-
-// void			add_map_line(t_data *data, char *line);
-// void			cleanup_map(t_data *data);
-// int				find_player(t_data *data);
-// void			print_map(t_data *data);
-// int				check_file_extension(char *filename);
-// int				is_valid_wall(t_data *data);
-// int				is_valid_content(t_data *data);
-// int				is_valid_map(t_data *data);
-// int				ft_tablen(char **str);
 
 #endif

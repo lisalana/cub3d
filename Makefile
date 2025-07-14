@@ -68,7 +68,7 @@ $(MLX):
 # Règle pour compiler libft
 $(LIBFT):
 	@echo "$(PURPLE)Compiling libft...$(RESET)"
-	@make -C $(LIBFT_DIR) --no-print-directory
+	@make -C $(LIBFT_DIR) > /dev/null 2>&1
 	@echo "$(GREEN)Libft compiled!$(RESET)"
 
 # Règle pour lier le programme final
