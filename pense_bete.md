@@ -95,3 +95,4 @@ No player or multiple players found
 
 
 ======================= VERIFIER TOUTES LES CARTES /maps/bad/maps...
+======================= TOUT free .. utiliser cleanup data

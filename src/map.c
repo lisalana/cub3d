@@ -111,43 +111,6 @@ int find_player(t_data *data)
 	return (1);
 }
 
-// int is_valid_wall(t_data *data)
-// {
-//     int i;
-//     int j;
-
-//     // Vérifier première et dernière ligne
-//     i = 0;
-//     while (data->map[0][i])
-//     {
-//         if (data->map[0][i] != '1' && data->map[0][i] != ' ')
-//             return (0);
-//         i++;
-//     }
-
-//     i = data->map_height - 1;
-//     j = 0;
-//     while (data->map[i][j])
-//     {
-//         if (data->map[i][j] != '1' && data->map[i][j] != ' ')
-//             return (0);
-//         j++;
-//     }
-
-//     // Vérifier première et dernière colonne de chaque ligne
-//     i = 1;
-//     while (i < data->map_height - 1)
-//     {
-//         if (data->map[i][0] != '1' && data->map[i][0] != ' ')
-//             return (0);
-//         j = ft_strlen(data->map[i]) - 1;
-//         if (data->map[i][j] != '1' && data->map[i][j] != ' ')
-//             return (0);
-//         i++;
-//     }
-//     return (1);
-// }
-
 int	check_content(t_data *data)
 {
 	int	i;
@@ -175,10 +138,3 @@ int	check_content(t_data *data)
 	}
 	return (1);
 }
-
-// int	is_valid_map(t_data *data)
-// {
-// 	if (find_player(data) && is_valid_wall(data) && is_valid_content(data))
-// 		return (1);
-// 	return (0);
-// }

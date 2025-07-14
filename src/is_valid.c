@@ -20,8 +20,6 @@ int check_line(t_data *data, int line_index)
 
     line = data->map[line_index];
     len = ft_str_len(line);
-    
-    // Une ligne de bordure doit avoir au moins 3 caractères
     if (len < 3)
     {
         printf("Error\nBorder line %d too short: minimum 3 characters required\n", 
