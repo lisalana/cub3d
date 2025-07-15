@@ -51,28 +51,124 @@ void	print_config(t_config *config)
 	printf("=====================\n");
 }
 
-int	main(int ac, char **av)
-{
-	t_data	data;
+// int	main(int ac, char **av)
+// {
+// 	t_data	data;
 
-	if (ac != 2 || !check_file_extension(av[1]))
-		return (printf("usage: %s <map.cub>\n", av[0]), 1);
-	init_data(&data);
-	if (parse_file(av[1], &data))
-	{
-		printf("Erreur pendant le parsing\n");
-		cleanup_data(&data);
-		return (1);
-	}
-	printf("Parsing terminé\n");
-	if (!check_map(&data))
-	{
-		cleanup_data(&data);
-		return (1);
-	}
-	printf("Carte valide !\n");
-	print_config(&data.config);
-	print_map(&data);
-	cleanup_data(&data);
-	return (0);
+// 	if (ac != 2 || !check_file_extension(av[1]))
+// 		return (printf("usage: %s <map.cub>\n", av[0]), 1);
+// 	init_data(&data);
+// 	if (parse_file(av[1], &data))
+// 	{
+// 		printf("Erreur pendant le parsing\n");
+// 		cleanup_data(&data);
+// 		return (1);
+// 	}
+// 	printf("Parsing terminé\n");
+// 	if (!check_map(&data))
+// 	{
+// 		cleanup_data(&data);
+// 		return (1);
+// 	}
+// 	printf("Carte valide !\n");
+// 	print_config(&data.config);
+// 	print_map(&data);
+// 	cleanup_data(&data);
+// 	return (0);
+// }
+
+
+int main(int ac, char **av)
+{
+    t_data data;
+    char *map;
+    int r;
+    
+    map = NULL;
+    if (ac != 2 || !check_file_extension(av[1]))
+        return (printf("usage: %s <map.cub>\n", av[0]), 1);
+    init_data(&data); 
+    if (parse_file(av[1], &data))
+    {
+        printf("Erreur pendant le parsing\n");
+        cleanup_data(&data);
+        return (1);
+    }
+    printf("Parsing terminé\n");
+    if (!check_map(&data))
+    {
+        cleanup_data(&data);
+        return (1);
+    }   
+    printf("Carte valide !\n");
+    init_player(&data);
+    data.mlx = mlx_init();
+    if (!data.mlx)
+    {
+        cleanup_data(&data);
+        return (printf("Mlx failed to create\n"), 1);
+    }
+    r = gamemlx(&data, map, av);
+    if (r != 1)
+    {
+        cleanup_data(&data);
+        if (r == -1)
+            return (1);
+        return (1);
+    }
+    printf("Has Wall At : %d\n", has_wall_at(&data, 1, 1));
+    render_map(&data); 
+    mlx_hook(data.win, 17, 0, close_game, &data);
+    mlx_hook(data.win, 2, 1L << 0, handle_input, &data);
+    mlx_loop(data.mlx);
+    cleanup_data(&data);
+    return (0);
 }
+
+
+// int	main(int ac, char **av)
+// {
+// 	t_data	data;
+// 	char	*map;
+// 	int		r;
+
+// 	map = NULL;
+// 	if (ac != 2 || !check_file_extension(av[1]))
+// 		return (printf("usage: %s <map.cub>\n", av[0]), 1);
+// 	init_data(&data);
+// 	if (parse_file(av[1], &data))
+// 	{
+// 		printf("Erreur pendant le parsing\n");
+// 		cleanup_data(&data);
+// 		return (1);
+// 	}
+// 	printf("Parsing terminé\n");
+// 	find_player(&data);
+// 	init_player(&data);
+// 	data.mlx = mlx_init();
+// 	if (!data.mlx)
+// 		return (printf("Mlx failed to create\n"), 1);
+// 	r = gamemlx(&data, map, av);
+// 	if (r != 1)
+// 	{
+// 		if (r == -1)
+// 			return (1);
+// 		return (free_split(data.map), 1);
+// 	}
+// 	// printf("Tile At Pos : %c\n", data.map[0][1]);
+// 	printf("Has Wall At : %d\n", has_wall_at(&data, 1, 1));
+// 	render_map(&data);
+// 	mlx_hook(data.win, 17, 0, close_game, &data);
+// 	mlx_hook(data.win, 2, 1L << 0, handle_input, &data);
+// 	mlx_loop(data.mlx);
+// 	// if (!check_map(&data))
+// 	// {
+// 	// 	cleanup_data(&data);
+// 	// 	return (1);
+// 	// }
+// 	// printf("Carte valide !\n");
+// 	// print_config(&data.config);
+// 	// print_map(&data);
+// 	// cleanup_data(&data);
+// 	return (0);
+// }

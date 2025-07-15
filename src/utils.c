@@ -12,3 +12,19 @@
 
 #include "cub3d.h"
 
+#include "cub3d.h"
+
+int	ft_tablen(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	has_wall_at(t_data *game, int x, int y)
+{
+	return ((game->map[y % TILESIZE][x % TILESIZE]) == '1');
+}

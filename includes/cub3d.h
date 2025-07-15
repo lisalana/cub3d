@@ -13,19 +13,26 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+//# define __USE_MISC
 # include "../get_next_line/get_next_line.h"
 # include "libft.h"
 # include "mlx.h"
+# include "raycast.h"
+# include "vectors.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <X11/keysym.h>
 
 # define EQUAL =
 
+
 typedef struct s_config
 {
+	void		*wall;
+	void		*floor;
 	char		*texture_north;
 	char		*texture_south;
 	char		*texture_west;
@@ -38,11 +45,19 @@ typedef struct s_player
 {
 	int			x;
 	int			y;
+	int			turnDirection;
+	int			walkDirection;
+	double		rotationSpeed;
+	double		rotationAngle;
+	double		moveSpeed;
 	char direction; // N, S, E, W
+	char		*texture_player;
 }				t_player;
 
 typedef struct s_data
 {
+	void		*mlx;
+	void		*win;
 	t_config	config;
 	char		**map;
 	int			map_width;
@@ -77,8 +92,8 @@ int		check_content(t_data *data);
 // ========== FONCTIONS PRINCIPALES ==========
 void	init_data(t_data *data);
 void	print_config(t_config *config);
-void	cleanup_data(t_data *data);
 int		check_file_extension(char *filename);
+void	cleanup_data(t_data *data);
 
 
 // Validation des bordures
