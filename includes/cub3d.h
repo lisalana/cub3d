@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsadi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:41:33 by lsadi             #+#    #+#             */
-/*   Updated: 2025/07/13 16:41:36 by lsadi            ###   ########.fr       */
+/*   Updated: 2025/07/16 13:43:54 by reeer-aa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,23 @@
 # include "mlx.h"
 # include "raycast.h"
 # include "vectors.h"
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <X11/keysym.h>
 
 # define EQUAL =
 
+
+typedef struct s_input
+{
+    int 		key_up;
+    int 		key_down;
+    int 		key_left;
+    int 		key_right;
+} 				t_input;
 
 typedef struct s_config
 {
@@ -43,14 +51,14 @@ typedef struct s_config
 
 typedef struct s_player
 {
-	int			x;
-	int			y;
+	double		x;
+	double		y;
 	int			turnDirection;
 	int			walkDirection;
 	double		rotationSpeed;
 	double		rotationAngle;
 	double		moveSpeed;
-	char direction; // N, S, E, W
+	char 		direction; // N, S, E, W
 	char		*texture_player;
 }				t_player;
 
@@ -63,58 +71,65 @@ typedef struct s_data
 	int			map_width;
 	int			map_height;
 	t_player	player;
+	t_ray		*ray;
+	t_img		*img;
+	t_input		input;
 }				t_data;
 
 
 // ========== FONCTIONS DE PARSING ==========
-int		parse_file(const char *filename, t_data *data);
-void	parse_color_line(char *line, t_config *config);
-int 	parse_color_line_safe(char *line, t_config *config);
-int		parse_texture_line(char *line, t_config *config);
-int		is_color_line(char *line);
-int		is_texture_line(char *line);
-int		is_map_line(char *line);
+int				parse_file(const char *filename, t_data *data);
+int				parse_texture_line(char *line, t_config *config);
+char 			*extract_texture_path(char *trimmed);
+int 			assign_texture(char *trimmed, char *path, t_config *config);
+int 			assign_texture_by_direction(t_config *config, char *path, char *direction);
+int				is_color_line(char *line);
+int				get_rgb_value(char *rgb_str);
+int				convert_rgb(char *line);
+int				parse_color_line(char *line, t_config *config);
+int				is_texture_line(char *line);
+int				is_map_line(char *line);
+int 			validate_order(t_data *data);
 
 // ========== FONCTIONS DE GESTION DE CARTE ==========
-void	add_map_line(t_data *data, char *line);
-void	cleanup_map(t_data *data);
-int		find_player(t_data *data);
-void	print_map(t_data *data);
+void			add_map_line(t_data *data, char *line);
+void			cleanup_map(t_data *data);
+int				find_player(t_data *data);
+void			print_map(t_data *data);
 
 // ========== FONCTIONS DE VALIDATION ==========
-int		check_walls(t_data *data);
-int		check_spaces(t_data *data);
-int		check_path(t_data *data);
-int		check_files(t_config *config);
-int		check_map(t_data *data);
-int		check_content(t_data *data);
+int				check_walls(t_data *data);
+int				check_spaces(t_data *data);
+int				check_path(t_data *data);
+int				check_files(t_config *config);
+int				check_map(t_data *data);
+int				check_content(t_data *data);
 
 // ========== FONCTIONS PRINCIPALES ==========
-void	init_data(t_data *data);
-void	print_config(t_config *config);
-int		check_file_extension(char *filename);
-void	cleanup_data(t_data *data);
-
+void			init_data(t_data *data);
+void			print_config(t_config *config);
+int				check_file_extension(char *filename);
+void			cleanup_data(t_data *data);
 
 // Validation des bordures
-int		check_line(t_data *data, int line_index);
-int		check_sides(t_data *data, int i);
-int		check_walls(t_data *data);
+int				check_line(t_data *data, int line_index);
+int				check_sides(t_data *data, int i);
+int				check_walls(t_data *data);
 
 // Validation des espaces
-int		check_pos(t_data *data, int x, int y);
-int		check_around(t_data *data, int x, int y);
-int		check_spaces(t_data *data);
+int				check_pos(t_data *data, int x, int y);
+int				check_around(t_data *data, int x, int y);
+int				check_spaces(t_data *data);
 
 // Flood fill algorithm
-int		is_border(t_data *data, int x, int y);
-void	flood_fill(char **map, int x, int y, t_data *data, int *valid);
-char	**copy_map(t_data *data);
-void	free_copy(char **map, int height);
-int 	get_max_width(t_data *data);
+int				is_border(t_data *data, int x, int y);
+void			flood_fill(char **map, int x, int y, t_data *data, int *valid);
+char			**copy_map(t_data *data);
+void			free_copy(char **map, int height);
+int				get_max_width(t_data *data);
 
 // Validation des fichiers
-int		file_exists(char *filename);
-int		check_files(t_config *config);
+int				file_exists(char *filename);
+int				check_files(t_config *config);
 
 #endif

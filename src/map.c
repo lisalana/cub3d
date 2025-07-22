@@ -6,7 +6,7 @@
 /*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 10:45:42 by reeer-aa          #+#    #+#             */
-/*   Updated: 2025/07/11 16:12:53 by reeer-aa         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:27:33 by reeer-aa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_map(t_data *data)
 
 	printf("=== CARTE ===\n");
 	printf("Dimensions: %d x %d\n", data->map_width, data->map_height);
-	printf("Joueur: (%d, %d) direction '%c'\n", data->player.x, data->player.y,
+	printf("Joueur: (%f, %f) direction '%c'\n", data->player.x, data->player.y,
 		data->player.direction);
 	if (!data->map)
 	{
@@ -85,15 +85,14 @@ static int	count_players(t_data *data, int *player_x, int *player_y,
 	return (count);
 }
 
-int find_player(t_data *data)
+int	find_player(t_data *data)
 {
-	int count;
-	int player_x;
-	int player_y;
-	char player_direction;
+	int		count;
+	int		player_x;
+	int		player_y;
+	char	player_direction;
 
 	count = count_players(data, &player_x, &player_y, &player_direction);
-	
 	if (count == 0)
 	{
 		printf("Error\nNo player found in map (N, S, E, or W required)\n");
@@ -101,7 +100,8 @@ int find_player(t_data *data)
 	}
 	else if (count > 1)
 	{
-		printf("Error\nMultiple players found (%d players). Only one allowed\n", count);
+		printf("Error\nMultiple players found (%d players). Only one allowed\n",
+			count);
 		return (0);
 	}
 	data->player.x = player_x;
@@ -128,7 +128,7 @@ int	check_content(t_data *data)
 				&& data->map[i][j] != ' ')
 			{
 				printf("Error\n");
-				printf("Invalid character '%c' at line %d, column %d\n", 
+				printf("Invalid character '%c' at line %d, column %d\n",
 					data->map[i][j], i + 1, j + 1);
 				return (0);
 			}

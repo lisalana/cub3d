@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lsadi <marvin@42.fr>                       +#+  +:+       +#+         #
+#    By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/13 16:42:45 by lsadi             #+#    #+#              #
-#    Updated: 2025/07/13 16:42:47 by lsadi            ###   ########.fr        #
+#    Updated: 2025/07/16 14:33:57 by reeer-aa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,20 @@ SRCS = src/main.c \
 	src/clean.c \
 	src/map.c \
 	src/parse_map.c \
+	src/render.c \
+	src/game.c \
+	src/textures.c \
+	src/player.c \
+	src/draw.c \
+	src/ray.c \
+	src/image.c \
 	src/utils.c \
 	src/is_valid.c \
 	src/flood_fill.c \
+	src/parse_texture.c \
+	src/parse_color.c \
 	get_next_line/get_next_line.c \
-	get_next_line/get_next_line_utils.c
+	get_next_line/get_next_line_utils.c 
 
 HEADERS = ./includes/
 
@@ -68,7 +77,7 @@ $(MLX):
 # Règle pour compiler libft
 $(LIBFT):
 	@echo "$(PURPLE)Compiling libft...$(RESET)"
-	@make -C $(LIBFT_DIR) > /dev/null 2>&1
+	@make -C $(LIBFT_DIR) --no-print-directory
 	@echo "$(GREEN)Libft compiled!$(RESET)"
 
 # Règle pour lier le programme final
