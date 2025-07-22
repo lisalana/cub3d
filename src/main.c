@@ -49,6 +49,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	printf("Carte valide !\n");
+	printf("TOOOOOZZZZZZ !\n");
 	data.ray = &ray;
 	ray.game = &data;
 	init_player(&data);
@@ -68,7 +69,7 @@ int	main(int ac, char **av)
 			return (1);
 		return (1);
 	}
-	printf("Has Wall At : %d\n", has_wall_at(&data, 1, 1));
+	//printf("Has Wall At : %d\n", has_wall_at(&data, 1, 1));
 	render_map(&data);
 	mlx_hook(data.win, 17, 0, close_game, &data);
 	mlx_hook(data.win, 2, 1L << 0, handle_input, &data);
