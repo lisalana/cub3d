@@ -77,25 +77,25 @@ int assign_texture_by_direction(t_config *config, char *path, char *direction)
     if (ft_strncmp(direction, "NO", 2) == 0)
     {
         if (config->texture_north)
-            return (printf("Error\nDuplicate North texture definition\n"), 0);
+            return (printf("Error: Duplicate North texture\n"), 0);
         config->texture_north = path;
     }
     else if (ft_strncmp(direction, "SO", 2) == 0)
     {
         if (config->texture_south)
-            return (printf("Error\nDuplicate South texture definition\n"), 0);
+            return (printf("Error: Duplicate South texture\n"), 0);
         config->texture_south = path;
     }
     else if (ft_strncmp(direction, "WE", 2) == 0)
     {
         if (config->texture_west)
-            return (printf("Error\nDuplicate West texture definition\n"), 0);
+            return (printf("Error: Duplicate West texture\n"), 0);
         config->texture_west = path;
     }
     else if (ft_strncmp(direction, "EA", 2) == 0)
     {
         if (config->texture_est)
-            return (printf("Error\nDuplicate East texture definition\n"), 0);
+            return (printf("Error: Duplicate East texture\n"), 0);
         config->texture_est = path;
     }
     else

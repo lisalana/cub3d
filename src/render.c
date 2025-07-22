@@ -18,7 +18,7 @@ int	gamemlx(t_data *game, char *map, char *argv[])
 	(void)map;
 	(void)argv;
 	if (!game->mlx)
-		return (printf("Error\nFailed to initialize MiniLibX\n"), 0);
+		return (printf("Error: Failed to initialize MiniLibX\n"), 0);
 	// map = read_map_file(argv[1]);
 	// if (!map)
 	// 	return (destroy_all(game), ft_printf("Error: Invalid map file\n"), -1);
@@ -37,44 +37,24 @@ int	gamemlx(t_data *game, char *map, char *argv[])
 	}
 	game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	if (!game->win)
-		return (printf("Error\nFailed to create window\n"), 0);
+		return (printf("Error: Failed to create window\n"), 0);
 	return (1);
 }
 
-void	rendering(t_data *game, int x, int y)
+void	rendering(t_data *game, int x)
 {
-	if (game->map[y][x] == '1')
-		put_image_to_image(game->img, (t_img *)game->config.wall, x * TILESIZE,
-			y * TILESIZE);
-	else if (game->map[y][x] == '0')
-		put_image_to_image(game->img, (t_img *)game->config.floor, x * TILESIZE,
-			y * TILESIZE);
-	put_image_to_image(game->img, (t_img *)game->player.texture_player,
-		game->player.x - ((t_img *)game->player.texture_player)->width / 2,
-		game->player.y - ((t_img *)game->player.texture_player)->height / 2);
-	draw_line(game->img, (int)game->player.x, (int)game->player.y,
-		(int)get_rotation_angleX(game), (int)get_rotation_angleY(game),
-		0xFF0000);
-	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	int	line_height;
+	int	draw_begin;
+
+	line_height = (32 / game->ray->distance) * D;
+	draw_begin = (WINDOW_HEIGHT / 2) - (line_height / 2);
+	draw_line(game->img, x, draw_begin, x, line_height, 0x00FFFF);
 }
 
 void	render_map(t_data *game)
 {
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < game->map_width)
-	{
-		x = 0;
-		while (x < game->map_height)
-		{
-			rendering(game, x, y);
-			x++;
-		}
-		y++;
-	}
 	render(game->ray);
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
 void	destroy_all(t_data *game)

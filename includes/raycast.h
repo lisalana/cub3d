@@ -6,7 +6,7 @@
 /*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 10:29:54 by reeer-aa          #+#    #+#             */
-/*   Updated: 2025/07/16 15:52:41 by reeer-aa         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:09:55 by reeer-aa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,25 @@
 # include <math.h>
 
 # define TILESIZE 48
-# define ROWS 21
-# define COLS 21
+# define ROWS 10
+# define COLS 15
 # define WINDOW_WIDTH (COLS * TILESIZE)
 # define WINDOW_HEIGHT (ROWS * TILESIZE)
+# define D WINDOW_WIDTH / (tan(30))
 # define FOV 60 * (M_PI / 180)
 # define RES 1
 # define NUM_RAYS WINDOW_WIDTH
 # define WALL_PATH "textures/wall.xpm"
 # define FLOOR_PATH "textures/tile.xpm"
 # define PLAYER_PATH "textures/red_dot.xpm"
+
 typedef struct s_data	t_data;
 
 typedef struct s_ray
 {
 	double				x;
 	double				y;
+	double				distance;
 	double				rayAngle;
 	double				start_angle;
 	double				angle_step;
@@ -48,8 +51,6 @@ typedef struct s_ray
 int						close_game(t_data *game);
 int						has_wall_at(t_data *game, int x, int y);
 int						handle_input(int key, t_data *game);
-int 					handle_key_release(int key, t_data *game); // Lisa
-void 					update_player_directions(t_data *game); // Lisa
 int						gamemlx(t_data *game, char *map, char *argv[]);
 int						load_all_textures(t_data *game);
 void					destroy_all(t_data *game);
@@ -57,7 +58,7 @@ void					free_textures(t_data *game);
 void					init_player(t_data *game);
 void					init_ray(t_data *game, double angle);
 void					*load_texture(void *mlx, char *path);
-void					rendering(t_data *game, int x, int y);
+void					rendering(t_data *game, int x);
 void					render_map(t_data *game);
 void					render(t_ray *ray);
 
@@ -65,6 +66,5 @@ int						init_main_image(t_data *game);
 void					put_pixel_to_image(t_img *img, int x, int y, int color);
 void					put_image_to_image(t_img *dst, t_img *src, int x,
 							int y);
-void					clear_image(t_img *img, int color);
 
 #endif

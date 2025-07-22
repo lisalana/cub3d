@@ -32,6 +32,7 @@ int	is_map_line(char *line)
 	}
 	return (has_map_chars);
 }
+
 static char	**allocate_new_map(t_data *data, char *trimmed_line)
 {
 	char	**new_map;
@@ -90,20 +91,4 @@ int	check_file_extension(char *filename)
 	if (ft_strcmp(filename + len - 4, ".cub") != 0)
 		printf("Error: Map should be in a .cub extension.\n");
 	return (ft_strcmp(filename + len - 4, ".cub") == 0);
-}
-
-int validate_order(t_data *data)
-{
-    if (!data->config.texture_north || !data->config.texture_south || 
-        !data->config.texture_west || !data->config.texture_est)
-    {
-        printf("Error: Missing textures before map\n");
-        return (0);
-    }
-    if (data->config.floor_color == -1 || data->config.ceiling_color == -1)
-    {
-        printf("Error: Missing colors before map\n");
-        return (0);
-    }
-    return (1);
 }

@@ -15,7 +15,7 @@
 
 void	draw_line(t_img *img, int beginX, int beginY, int endX, int endY,
 			int color);
-void	update(t_data *game);
+void	update(int key, t_data *game);
 double	get_rotation_angleY(t_data *data);
 double	get_rotation_angleX(t_data *data);
 

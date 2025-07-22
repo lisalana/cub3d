@@ -6,7 +6,7 @@
 /*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:41:33 by lsadi             #+#    #+#             */
-/*   Updated: 2025/07/16 13:43:54 by reeer-aa         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:50:50 by reeer-aa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,6 @@
 # include <unistd.h>
 
 # define EQUAL =
-
-
-typedef struct s_input
-{
-    int 		key_up;
-    int 		key_down;
-    int 		key_left;
-    int 		key_right;
-} 				t_input;
 
 typedef struct s_config
 {
@@ -58,7 +49,7 @@ typedef struct s_player
 	double		rotationSpeed;
 	double		rotationAngle;
 	double		moveSpeed;
-	char 		direction; // N, S, E, W
+	char direction; // N, S, E, W
 	char		*texture_player;
 }				t_player;
 
@@ -73,21 +64,27 @@ typedef struct s_data
 	t_player	player;
 	t_ray		*ray;
 	t_img		*img;
-	t_input		input;
 }				t_data;
 
+// ========== FONCTIONS DEV ==========
+
+// void	print_texture(char *name, char *texture);
+// void	print_textures(t_config *config);
+// void	print_config(t_config *config);
+// void	print_map(t_data *data);
 
 // ========== FONCTIONS DE PARSING ==========
 int				parse_file(const char *filename, t_data *data);
+int 			process_line(char *line, t_data *data);
+int				is_color_line(char *line);
+int				get_rgb_value(char *rgb_str);
+int				convert_rgb(char *line);
+int 			parse_color_line(char *line, t_config *config);
+int				is_texture_line(char *line);
 int				parse_texture_line(char *line, t_config *config);
 char 			*extract_texture_path(char *trimmed);
 int 			assign_texture(char *trimmed, char *path, t_config *config);
 int 			assign_texture_by_direction(t_config *config, char *path, char *direction);
-int				is_color_line(char *line);
-int				get_rgb_value(char *rgb_str);
-int				convert_rgb(char *line);
-int				parse_color_line(char *line, t_config *config);
-int				is_texture_line(char *line);
 int				is_map_line(char *line);
 int 			validate_order(t_data *data);
 
@@ -95,7 +92,6 @@ int 			validate_order(t_data *data);
 void			add_map_line(t_data *data, char *line);
 void			cleanup_map(t_data *data);
 int				find_player(t_data *data);
-void			print_map(t_data *data);
 
 // ========== FONCTIONS DE VALIDATION ==========
 int				check_walls(t_data *data);
@@ -107,9 +103,9 @@ int				check_content(t_data *data);
 
 // ========== FONCTIONS PRINCIPALES ==========
 void			init_data(t_data *data);
-void			print_config(t_config *config);
 int				check_file_extension(char *filename);
 void			cleanup_data(t_data *data);
+int				main_loop(t_data *game);
 
 // Validation des bordures
 int				check_line(t_data *data, int line_index);
