@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsadi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:41:51 by lsadi             #+#    #+#             */
-/*   Updated: 2025/07/13 16:41:55 by lsadi            ###   ########.fr       */
+/*   Updated: 2025/08/07 11:22:16 by reeer-aa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int get_max_width(t_data *data)
+int	get_max_width(t_data *data)
 {
-	int max_width;
-	int current_width;
-	int i;
+	int	max_width;
+	int	current_width;
+	int	i;
 
 	max_width = 0;
 	i = 0;
@@ -30,106 +30,38 @@ int get_max_width(t_data *data)
 	return (max_width);
 }
 
-int is_border(t_data *data, int x, int y)
+int	is_border(t_data *data, int x, int y)
 {
-	int max_width;
+	int	max_width;
 
-	max_width = get_max_width(data);	
+	max_width = get_max_width(data);
 	if (y == 0 || y == data->map_height - 1)
 		return (1);
 	if (x == 0 || x == max_width - 1)
-		return (1);	
+		return (1);
 	return (0);
 }
 
-void flood_fill(char **map, int x, int y, t_data *data, int *valid)
+void	flood_fill(char **map, t_point pos, t_data *data, int *valid)
 {
-    char current_char;
-
-    if (*valid == 0)
-	{
-        return;
-    }
-    if (y < 0 || y >= data->map_height)
-    {
-        return;
-    }
-    if (x < 0 || x >= (int)ft_str_len(map[y]))
-    {
-        return;
-    }
-    
-    current_char = map[y][x];
-    if (current_char == '1' || current_char == 'V')
-    {
-        return;
-    }
-    if (current_char == ' ')
-    {
-        return;
-    }
-    if (is_border(data, x, y))
-    {
-        *valid = 0;
-        return;
-    }
-    map[y][x] = 'V';
-    flood_fill(map, x - 1, y, data, valid);
-    flood_fill(map, x + 1, y, data, valid);
-    flood_fill(map, x, y - 1, data, valid);
-    flood_fill(map, x, y + 1, data, valid);
-}
-
-char	**copy_map(t_data *data)
-{
-	char	**dup_map;
-	int		i;
-
-	dup_map = malloc(sizeof(char *) * (data->map_height + 1));
-	if (!dup_map)
-		return (NULL);
-	i = 0;
-	while (i < data->map_height)
-	{
-		dup_map[i] = ft_strdup(data->map[i]);
-		if (!dup_map[i])
-		{
-			while (--i >= 0)
-				free(dup_map[i]);
-			free(dup_map);
-			return (NULL);
-		}
-		i++;
-	}
-	dup_map[data->map_height] = NULL;
-	return (dup_map);
-}
-
-void	free_copy(char **map, int height)
-{
-	int	i;
-
-	if (!map)
+	if (*valid == 0)
 		return ;
-	i = 0;
-	while (i < height)
+	if (pos.y < 0 || pos.y >= data->map_height)
+		return ;
+	if (pos.x < 0 || pos.x >= (int)ft_str_len(map[pos.y]))
+		return ;
+	if (map[pos.y][pos.x] == '1' || map[pos.y][pos.x] == 'V')
+		return ;
+	if (map[pos.y][pos.x] == ' ')
+		return ;
+	if (is_border(data, pos.x, pos.y))
 	{
-		free(map[i]);
-		i++;
+		*valid = 0;
+		return ;
 	}
-	free(map);
-}
-
-int	check_path(t_data *data)
-{
-	char	**map_copy;
-	int		valid;
-
-	map_copy = copy_map(data);
-	if (!map_copy)
-		return (0);
-	valid = 1;
-	flood_fill(map_copy, data->player.pos[0], data->player.pos[1], data, &valid);
-	free_copy(map_copy, data->map_height);
-	return (valid);
+	map[pos.y][pos.x] = 'V';
+	flood_fill(map, (t_point){pos.x - 1, pos.y}, data, valid);
+	flood_fill(map, (t_point){pos.x + 1, pos.y}, data, valid);
+	flood_fill(map, (t_point){pos.x, pos.y - 1}, data, valid);
+	flood_fill(map, (t_point){pos.x, pos.y + 1}, data, valid);
 }

@@ -6,7 +6,7 @@
 #    By: reeer-aa <reeer-aa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/13 16:42:45 by lsadi             #+#    #+#              #
-#    Updated: 2025/07/29 11:46:10 by reeer-aa         ###   ########.fr        #
+#    Updated: 2025/08/11 11:59:53 by reeer-aa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,9 @@ SRCS = src/main.c \
 	src/clean.c \
 	src/map.c \
 	src/minimap.c \
+	src/minimap_utils.c \
+	src/minimap_utils2.c \
+	src/minimap_utils3.c \
 	src/parse_map.c \
 	src/render.c \
 	src/render_utils.c \
@@ -30,9 +33,15 @@ SRCS = src/main.c \
 	src/image.c \
 	src/utils.c \
 	src/is_valid.c \
+	src/is_valid_utils.c \
+	src/is_valid_utils2.c \
 	src/flood_fill.c \
+	src/flood_fill_utils.c \
 	src/parse_texture.c \
 	src/parse_color.c \
+	src/main_loop.c \
+	src/parse_texture1.c \
+	src/init_data.c \
 	get_next_line/get_next_line.c \
 	get_next_line/get_next_line_utils.c 
 
@@ -111,6 +120,6 @@ re : fclean all
 dev : re
 		make clean
 		clear
-		valgrind -s --show-leak-kinds=all  --track-origins=yes --leak-check=full ./cub3D maps/super.cub
+		valgrind --show-leak-kinds=all  --track-origins=yes --leak-check=full ./cub3D maps/super.cub
 		
 .PHONY: all clean fclean re dev
